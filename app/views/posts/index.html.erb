@@ -1,0 +1,45 @@
+<h1 class="mb-4">All Posts</h1>
+
+<% if user_signed_in? %>
+  <%= link_to "Create New Post", new_post_path, class: "btn btn-primary mb-4" %>
+<% end %>
+
+<% if @posts.any? %>
+  <div class="row g-4">
+    <% @posts.each do |post| %>
+      <div class="col-md-6 col-lg-4">
+        <div class="card h-100 shadow-sm">
+          <div class="card-body">
+            <h5 class="card-title">
+              <%= link_to post.title, post_path(post), class: "text-decoration-none" %>
+            </h5>
+
+            <p class="card-text text-muted small">
+              <%= post.content.truncate(100) %>
+            </p>
+
+            <p class="text-muted small">
+              By <%= post.user.first_name || post.user.email %>
+            </p>
+          </div>
+
+          <% if user_signed_in? && current_user == post.user %>
+            <div class="card-footer bg-transparent d-flex justify-content-between">
+              <%= link_to "Edit", edit_post_path(post), class: "btn btn-sm btn-warning" %>
+
+              <%= button_to "Delete",
+                    post_path(post),
+                    method: :delete,
+                    data: { confirm: "Are you sure?" },
+                    class: "btn btn-sm btn-danger" %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+<% else %>
+  <div class="alert alert-info">
+    No posts yet.
+  </div>
+<% end %>
