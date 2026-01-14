@@ -2,7 +2,7 @@ class PostsController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show]
 
   def index
-    @posts = Post.includes(:user).order(created_at: :desc)
+    @posts = Post.all
   end
 
   def show
@@ -10,35 +10,42 @@ class PostsController < ApplicationController
   end
 
   def new
-    @post = current_user.posts.build
+    @post = Post.new
+    authorize @post
   end
 
   def create
     @post = current_user.posts.build(post_params)
+    authorize @post
+
     if @post.save
-      redirect_to @post, notice: "Post created successfully."
+      redirect_to @post, notice: "Post created!"
     else
-      render :new
+      render :new, status: :unprocessable_entity
     end
   end
 
   def edit
-    @post = current_user.posts.find(params[:id])
+    @post = Post.find(params[:id])
+    authorize @post
   end
 
   def update
-    @post = current_user.posts.find(params[:id])
+    @post = Post.find(params[:id])
+    authorize @post
+
     if @post.update(post_params)
-      redirect_to @post, notice: "Post updated successfully."
+      redirect_to @post, notice: "Post updated!"
     else
-      render :edit
+      render :edit, status: :unprocessable_entity
     end
   end
 
   def destroy
-    @post = current_user.posts.find(params[:id])
+    @post = Post.find(params[:id])
+    authorize @post
     @post.destroy
-    redirect_to posts_path, notice: "Post deleted."
+    redirect_to posts_path, notice: "Post deleted!"
   end
 
   private
