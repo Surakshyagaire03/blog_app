@@ -13,6 +13,17 @@
       </div>
     </article>
 
+    <% if policy(@post).update? %>
+  <%= link_to "Edit", edit_post_path(@post), class: "btn btn-warning" %>
+<% end %>
+
+<% if policy(@post).destroy? %>
+  <%= button_to "Delete", @post, method: :delete,
+        data: { confirm: "Are you sure?" },
+        class: "btn btn-danger" %>
+<% end %>
+
+
     <div class="d-flex gap-3">
       <%= link_to "Back to all posts", posts_path, class: "btn btn-outline-secondary" %>
 

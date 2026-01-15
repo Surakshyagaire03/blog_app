@@ -14,8 +14,20 @@ class ApplicationController < ActionController::Base
 
   private
 
-  def user_not_authorized
-    flash[:alert] = "You are not authorized to perform this action."
+  def user_not_authorized(exception)
+    action = exception.query.to_s.remove("?")
+
+    flash[:alert] = case action
+                    when "update"
+                      "You cannot edit this record."
+                    when "destroy"
+                      "You cannot delete this record."
+                    when "create"
+                      "You are not allowed to create this resource."
+                    else
+                      "You are not authorized to perform this action."
+                    end
+
     redirect_to(request.referrer || root_path)
-  end
+  end   
 end

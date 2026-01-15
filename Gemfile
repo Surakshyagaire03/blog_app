@@ -35,7 +35,7 @@ gem 'pg', '~> 1.6', '>= 1.6.2'
 
 gem 'devise', '~> 4.9', '>= 4.9.4'
 
-gem 'letter_opener', '~> 1.10'
+# gem 'letter_opener', '~> 1.10'
 
 # Reduces boot times through caching; required in config/boot.rb
 gem "bootsnap", require: false

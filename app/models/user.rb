@@ -9,7 +9,7 @@ class User < ApplicationRecord
 
 
   # Associations
-  has_many :posts, dependent: :destroy
+  has_many :posts
 
   # Validations (optional but recommended)
   validates :first_name, presence: true

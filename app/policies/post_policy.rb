@@ -27,4 +27,17 @@ class PostPolicy < ApplicationPolicy
   def destroy?
     edit?
   end
+
+  # Policy Scope
+  class Scope < Scope
+    def resolve
+      if user.admin?
+        scope.all
+      elsif user.author?
+        scope.where(user_id: user.id).or(scope.published)
+      else
+        scope.published
+      end
+    end
+  end
 end
